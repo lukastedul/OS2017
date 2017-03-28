@@ -5,19 +5,23 @@ using namespace std;
 
 int unos = 0;
 
-void prekidnaRutinaJedan(int sig){
-	unos = 1;
-}
-
-void prekidnaRutinaDva(int sig){
-	unos = 2;
-}
-
-void prekidnaRutinaTri(int sig){
-	unos = 3;
+void prekidnaRutina(int sig){
+	switch (sig) {
+		case SIGINT:
+			unos=1;
+			break;
+		case SIGQUIT:
+			unos=2;
+			break;
+		case SIGTSTP:
+			unos=2;
+			break;
+		}
 }
 
 int main(){
+
+	cout<<"NIM"<<endl<<endl;
 
 	// postavljanje signala
 	sigset(SIGINT, prekidnaRutinaJedan);
@@ -27,22 +31,20 @@ int main(){
 
 
 	// postavke igre
-	cout<<"NIM"<<endl<<endl;
-
-	int m=0;
-	cout<<"M=";
-	cin>>m;
+	int m=3;
+	cout<<"M="<<m<<endl;
+	/*cin>>m;
 	while(m<3){
 		cout<<"Broj mora biti veci od 2!"<<endl;
 		cout<<"M=";
 		cin>>m;
-	}
+	} NI TO MI NETREBA, BUDE 3 FIKSNO */
 
 	int n=0;
 	cout<<"N=";
 	cin>>n;
 	while(n<m){
-		cout<<"Broj sibica na stolu mora biti veci od M!"<<endl;
+		cout<<"Broj sibica na stolu mora biti veci od "<< m <<" !"<<endl;
 		cout<<"N=";
 		cin>>n;
 	}
@@ -54,10 +56,9 @@ int main(){
 	// igra
 	string igrac;
 	string pobjednik;
-	int i=1;fgfg
+	int i=1;
 	// UNOOOOOOOOOOOOOOOOOS int unos;
 	while(n>0){
-
 		if(i % 2 != 0){
 			igrac="A";
 			pobjednik="B";
