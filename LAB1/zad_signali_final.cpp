@@ -65,7 +65,7 @@ int main(int argc, char const *argv[]) {
 	cin>>n;
 	cout<<"Parametri su ispravni. Zapocinjem igru."<<endl;
 
-     sigset(SIGINT,PrekidnaRutina);
+     sigset(SIGINT, PrekidnaRutina);
      sigset(SIGQUIT,PrekidnaRutina);
      sigset(SIGTSTP,PrekidnaRutina);
 
