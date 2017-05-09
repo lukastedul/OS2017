@@ -62,15 +62,15 @@ int main(int argc, char *argv[]){
 		return 0;
 	}
 
-	v=(pthread_t*)malloc(sizeof(pthread_t)*n);
-	trazim=(int *)malloc(sizeof(int)*n);
-	broj=(int *)malloc(sizeof(int)*n);
+	v=(pthread_t*)malloc(sizeof(pthread_t)*n); //alociranje memorije za dretvu
+	trazim=(int *)malloc(sizeof(int)*n); //trazim
+	broj=(int *)malloc(sizeof(int)*n); //broj
 	
 	for(i=0;i<n;i++){
-		pthread_create(&v[i],NULL, algoritam, NULL);
+		pthread_create(&v[i],NULL, algoritam, NULL); //kreiranje dretvi
 	}
 	for(i=0;i<n;i++){
-		 pthread_join(v[i], NULL);
+		 pthread_join(v[i], NULL); //čekanje na završavanje dretvi
 	}
 
 	return 0;

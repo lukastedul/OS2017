@@ -29,9 +29,9 @@ int main(int argc, char *argv[]){
 		return 0;
 	}
 
-	l=atoi(argv[1]);
-	m=atoi(argv[2]);
-	n=atoi(argv[3]);
+	l=atoi(argv[1]); //velicina vektora odnosno broj eksponenata
+	m=atoi(argv[2]); //
+	n=atoi(argv[3]); //broj procesa
 	
 	if(!(l && m && n)){
 		cout<<"Krivi unos"<<endl;
@@ -42,24 +42,28 @@ int main(int argc, char *argv[]){
 		return 0;
 	}
 	
-	a=(long double*)malloc(sizeof(int)*l);
-	id=shmget(IPC_PRIVATE,sizeof(int)*100,0600);
+	a=(long double*)malloc(sizeof(int)*l); //alociranje memorije
+	id=shmget(IPC_PRIVATE,sizeof(int)*100,0600); //stvaranje novog segmenta
+												 //dozvola pristupa 0600 znači da korisnik može čitati i pisati, a grupa i ostali ne mogu
+ 												 //vraća identifikacijski broj segmenta ili -1 u slučaju greške
+
 	if(id==-1){
-		exit(1);
+		exit(1); //greška
 	}
-	b=(long double*)shmat(id,NULL,0);
+	b=(long double*)shmat(id,NULL,0); //alociranje memorije
+
 	sigset(SIGINT, brisanje);
 	
 	cout<<"Eksponenti="<<endl;
-	srand(time(0));
-	rand();
+	srand(time(0)); //seed za random brojeve
+	rand();			//generator
 	for(int i=0; i<l; i++){
-		a[i]=10*((double)rand()/(double)RAND_MAX);
+		a[i]=10*((double)rand()/(double)RAND_MAX); //RAND_MAX je najveći broj iz rand, 32767
 		cout<<setprecision(12)<<fixed<<a[i]<<endl;
 	}
 
-	broj=l/n;
-	zad=0;
+	broj=l/n; //raspoređivanje posla ravnomjerno
+	zad=0; //
 	cout<<"Eksponencijale="<<endl;
 	for(int p=1; p<=n; p++){
 		brojac=zad;
@@ -84,7 +88,7 @@ int main(int argc, char *argv[]){
 						nazivnik=1;
 						if(i>0){
 							for(int k=1; k<=i;k++){
-								nazivnik*=k;
+								nazivnik=k; //removan * (nazivnik*)
 							}
 						}
 						b[j] += (double)brojnik/nazivnik;
@@ -99,13 +103,13 @@ int main(int argc, char *argv[]){
 	}
 
 	while (n--){
-		wait(NULL);
+		wait(NULL);  //cekanje da svi procesi zavrse
 	}
 	for(int i=0;i<l;i++){
-		cout << b[i] << endl;
+		cout << b[i] << endl;  //jer se ne stignu upisat sve eksponencijale u b
 	}
-	shmdt((long double*)b);
-	shmctl(id, IPC_RMID, NULL);
+	shmdt((long double*)b); //otpustanje segmenta iz adresnog prostora
+	shmctl(id, IPC_RMID, NULL); //unistavanje segmenta
 	exit(0);
 
 	return 0;	
