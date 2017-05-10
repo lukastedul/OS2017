@@ -1,3 +1,10 @@
+/* int shmget(key_t key, int size, int flags); stvaranje novog segmenta i njegovog kljuca  
+ * char *shmat(int segid, char *addr, int flags); vezanje segmenta na određenu adresu
+ * int shmdt(char *addr); otpuštanje segmenta
+ * shmctlint shmctl(int segid, int cmd, struct shmid_ds *sbuf); uništavanje segmenta
+ */
+
+
 #include<iostream>
 #include<iomanip>
 #include<cstdlib>
@@ -50,7 +57,7 @@ int main(int argc, char *argv[]){
 	if(id==-1){
 		exit(1); //greška
 	}
-	b=(long double*)shmat(id,NULL,0); //alociranje memorije
+	b=(long double*)shmat(id,NULL,0); //alociranje memorije i vezanje na adresni prostor
 
 	sigset(SIGINT, brisanje);
 	
@@ -88,7 +95,7 @@ int main(int argc, char *argv[]){
 						nazivnik=1;
 						if(i>0){
 							for(int k=1; k<=i;k++){
-								nazivnik=k; //removan * (nazivnik*)
+								nazivnik=k; //*
 							}
 						}
 						b[j] += (double)brojnik/nazivnik;
@@ -106,7 +113,7 @@ int main(int argc, char *argv[]){
 		wait(NULL);  //cekanje da svi procesi zavrse
 	}
 	for(int i=0;i<l;i++){
-		cout << b[i] << endl;  //jer se ne stignu upisat sve eksponencijale u b
+		cout << b[i] << endl;
 	}
 	shmdt((long double*)b); //otpustanje segmenta iz adresnog prostora
 	shmctl(id, IPC_RMID, NULL); //unistavanje segmenta

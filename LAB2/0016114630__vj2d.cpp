@@ -40,7 +40,7 @@ void *algoritam(void *p){
 		ulazUKriticniOdsjecak(i);
 		for(m=1;m<=5;m++){
 			cout<<"Dretva "<<i+1<<", K.O. br: "<<k<<" ("<<m<< "/5)\n";
-			sleep(1);
+			sleep(2);
 		}
 		izlazIzKriticnogOdsjecka(i);
 	}
@@ -63,14 +63,14 @@ int main(int argc, char *argv[]){
 	}
 
 	v=(pthread_t*)malloc(sizeof(pthread_t)*n); //alociranje memorije za dretvu
-	trazim=(int *)malloc(sizeof(int)*n); //trazim
-	broj=(int *)malloc(sizeof(int)*n); //broj
+	trazim=(int *)malloc(sizeof(int)*n);
+	broj=(int *)malloc(sizeof(int)*n);
 	
 	for(i=0;i<n;i++){
-		pthread_create(&v[i],NULL, algoritam, NULL); //kreiranje dretvi
+		pthread_create(&v[i],NULL, algoritam, NULL); //kreiranje dretve
 	}
 	for(i=0;i<n;i++){
-		 pthread_join(v[i], NULL); //čekanje na završavanje dretvi
+		 pthread_join(v[i], NULL); //cekanje na zavrsetak dretve
 	}
 
 	return 0;
