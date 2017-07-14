@@ -3,8 +3,8 @@
 //#include <stdlib.h> //nez za kaj je to
 #include <unistd.h> //to je za sleep
 
-sem_t red1;
-sem_t red2;
+pthread_mutex_t monitor;
+int zadnji = NULL;
 
 void *Ping()
 {
@@ -22,10 +22,14 @@ void *Pong()
 {
    while(1)
    {
-      sem_wait(&red2);
-      printf("Pong\n");
-      sleep(1);
-      sem_post(&red1);
+      pthread_mutex_lock(&monitor);
+         while(zadnji==2){
+            pthread_cond_wait(&uvjet,&monitor)
+         }
+         zadnja="PONG";
+         printf("Pong\n");
+         pthread_cond_signal(&monitor);
+      pthread_mutex_unlock(&monitor);
    }
    pthread_exit(0);
 }
@@ -35,9 +39,6 @@ int main(int argc, char *argv[])
 {
    pthread_t ping;
    pthread_t pong;
-
-   sem_init(&red1, 0, 1);
-   sem_init(&red2, 0, 0);
 
    pthread_create (&ping, NULL, Ping, NULL);
    pthread_create (&pong, NULL, Pong, NULL);
